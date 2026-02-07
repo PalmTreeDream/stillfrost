@@ -1,246 +1,221 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
+    Eye,
     Search,
     Hammer,
     Radio,
     Scale,
-    Eye,
     ArrowRight,
-    Zap,
-    Target,
-    Layers
-} from "lucide-react";
-import GlobalNav from "@/components/GlobalNav";
+} from 'lucide-react';
+import {
+    NavBar,
+    Footer,
+    PageContainer,
+    GlassCard,
+    SectionHeader,
+    CTASection,
+} from '../components/studio';
 
-const ProcessStep = ({
-    number,
-    title,
-    description,
-    icon: Icon,
-    delay
-}: {
-    number: string;
-    title: string;
-    description: string;
-    icon: React.ElementType;
-    delay: number;
-}) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay }}
-        className="relative"
-    >
-        <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-zinc-800/80 border border-zinc-700 flex items-center justify-center">
-                <Icon size={20} className="text-zinc-400" />
-            </div>
-            <div>
-                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
-                    Phase {number}
-                </span>
-                <h3 className="text-lg font-serif text-white mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    {title}
-                </h3>
-                <p className="text-sm text-zinc-400 mt-2 leading-relaxed">
-                    {description}
-                </p>
-            </div>
-        </div>
-    </motion.div>
-);
-
-const infrastructureAgents = [
-    { name: "Oversight", role: "Quality & Standards", icon: Eye, color: "violet" },
-    { name: "Intelligence", role: "Research & Discovery", icon: Search, color: "cyan" },
-    { name: "Systems", role: "Build & Deploy", icon: Hammer, color: "amber" },
-    { name: "Reach", role: "Distribution & Growth", icon: Radio, color: "emerald" },
-    { name: "Logic", role: "Validation & Optimization", icon: Scale, color: "rose" },
+const agents = [
+    {
+        name: 'Oversight Governor',
+        role: 'Quality & Compliance',
+        icon: Eye,
+        color: 'violet',
+        description: 'Reviews all agent outputs before they reach the outside world. Ensures brand consistency and quality standards.',
+    },
+    {
+        name: 'Intelligence Scout',
+        role: 'Opportunity Discovery',
+        icon: Search,
+        color: 'cyan',
+        description: 'Continuously scans markets for automation opportunities and emerging pain points worth solving.',
+    },
+    {
+        name: 'Systems Forge',
+        role: 'Product Development',
+        icon: Hammer,
+        color: 'amber',
+        description: 'Builds, deploys, and maintains our software products. Handles the entire development lifecycle.',
+    },
+    {
+        name: 'Reach Signal',
+        role: 'Distribution & Growth',
+        icon: Radio,
+        color: 'emerald',
+        description: 'Manages market presence, customer acquisition, and growth initiatives across all products.',
+    },
+    {
+        name: 'Logic Gatekeeper',
+        role: 'Validation & Testing',
+        icon: Scale,
+        color: 'rose',
+        description: 'Validates business logic, runs quality assurance, and ensures products meet the Stillfrost Standard.',
+    },
 ];
 
-export default function AboutPage() {
+const methodologySteps = [
+    {
+        step: '01',
+        title: 'Identify',
+        description: 'Our Intelligence agent scans for high-friction "laptop jobs" that professionals waste hours on weekly.',
+    },
+    {
+        step: '02',
+        title: 'Validate',
+        description: 'Logic agent validates market size, competition, and technical feasibility before we commit resources.',
+    },
+    {
+        step: '03',
+        title: 'Build',
+        description: 'Systems agent scaffolds, develops, and deploys a working MVP in days, not months.',
+    },
+    {
+        step: '04',
+        title: 'Launch',
+        description: 'Reach agent handles go-to-market, from landing pages to initial customer acquisition.',
+    },
+    {
+        step: '05',
+        title: 'Operate',
+        description: 'All agents collaborate to maintain, improve, and scale the product indefinitely.',
+    },
+];
+
+const AgentCard = ({ agent }: { agent: typeof agents[0] }) => {
+    const Icon = agent.icon;
+    const colorClasses: Record<string, { bg: string; border: string; text: string }> = {
+        violet: { bg: 'bg-violet-500/20', border: 'border-violet-500/30', text: 'text-violet-400' },
+        cyan: { bg: 'bg-cyan-500/20', border: 'border-cyan-500/30', text: 'text-cyan-400' },
+        amber: { bg: 'bg-amber-500/20', border: 'border-amber-500/30', text: 'text-amber-400' },
+        emerald: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/30', text: 'text-emerald-400' },
+        rose: { bg: 'bg-rose-500/20', border: 'border-rose-500/30', text: 'text-rose-400' },
+    };
+    const colors = colorClasses[agent.color];
+
     return (
-        <div className="min-h-screen w-full bg-black">
-            <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-black to-zinc-950" />
+        <GlassCard>
+            <div className="flex items-start gap-4">
+                <div className={`p-3 rounded-xl ${colors.bg} border ${colors.border}`}>
+                    <Icon size={20} className={colors.text} />
+                </div>
+                <div className="flex-1">
+                    <h3 className="text-lg font-medium text-white mb-1">{agent.name}</h3>
+                    <p className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-3">
+                        {agent.role}
+                    </p>
+                    <p className="text-sm text-slate-400 leading-relaxed">
+                        {agent.description}
+                    </p>
+                </div>
+            </div>
+        </GlassCard>
+    );
+};
 
-            <div className="absolute inset-0 opacity-[0.02]" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-            }} />
+export default function About() {
+    return (
+        <PageContainer>
+            <NavBar />
 
-            <div className="relative z-10">
-                <GlobalNav />
+            {/* Hero */}
+            <section className="pt-32 pb-24 px-4 md:px-8">
+                <div className="max-w-4xl mx-auto text-center">
+                    <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-xs font-medium uppercase tracking-widest text-slate-500 mb-6"
+                    >
+                        About the Studio
+                    </motion.p>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-[1.1] tracking-tight mb-8"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
+                    >
+                        We build software that runs itself
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed"
+                    >
+                        Stillfrost is an autonomous venture studio. Our AI agents conceive, build,
+                        launch, and operate software products — while we focus on strategy and growth.
+                    </motion.p>
+                </div>
+            </section>
 
-                <div className="pt-24 pb-16 px-4 md:px-8">
-                    <div className="max-w-4xl mx-auto">
+            {/* Methodology */}
+            <section className="py-24 border-t border-white/5">
+                <div className="max-w-6xl mx-auto px-4 md:px-8">
+                    <SectionHeader
+                        label="Methodology"
+                        title="From idea to revenue in weeks, not years"
+                        subtitle="Our agent-powered process eliminates the traditional bottlenecks of product development."
+                    />
 
-                        {/* Header */}
-                        <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="mb-16 text-center"
-                        >
-                            <h1
-                                className="text-4xl md:text-5xl font-serif text-white mb-6"
-                                style={{ fontFamily: "'Playfair Display', serif" }}
-                            >
-                                About the Studio
-                            </h1>
-                            <p className="text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-                                We build, launch, and operate software products autonomously.
-                                Our infrastructure handles the entire lifecycle — from market research
-                                to production deployment — with precision and speed.
-                            </p>
-                        </motion.div>
-
-                        {/* Philosophy */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            className="mb-20 p-8 rounded-2xl bg-zinc-900/60 backdrop-blur-xl border border-zinc-800"
-                        >
-                            <h2 className="text-xl font-serif text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                Our Approach
-                            </h2>
-                            <p className="text-zinc-400 leading-relaxed mb-4">
-                                Stillfrost operates as an autonomous venture studio. We don't take on client work
-                                or offer consulting services. Instead, we identify high-friction problems in
-                                professional workflows and build products to solve them — products we own and
-                                operate indefinitely.
-                            </p>
-                            <p className="text-zinc-400 leading-relaxed">
-                                Every product in our portfolio was conceived, validated, built, and launched
-                                through our internal infrastructure. We maintain and grow these products as
-                                part of a diversified portfolio of operational software assets.
-                            </p>
-                        </motion.div>
-
-                        {/* Process */}
-                        <div className="mb-20">
+                    <div className="grid md:grid-cols-5 gap-6">
+                        {methodologySteps.map((step, index) => (
                             <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.3 }}
-                                className="mb-8"
+                                key={step.step}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.1 * index }}
+                                className="relative"
                             >
-                                <h2 className="text-xl font-serif text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                    Studio Process
-                                </h2>
-                                <p className="text-sm text-zinc-500 mt-2">
-                                    How we take an idea from research to production
-                                </p>
+                                <div className="text-5xl font-bold text-slate-800 mb-4">{step.step}</div>
+                                <h3 className="text-lg font-medium text-white mb-2">{step.title}</h3>
+                                <p className="text-sm text-slate-400 leading-relaxed">{step.description}</p>
+                                {index < methodologySteps.length - 1 && (
+                                    <ArrowRight size={16} className="hidden md:block absolute top-8 -right-3 text-slate-700" />
+                                )}
                             </motion.div>
-
-                            <div className="space-y-8">
-                                <ProcessStep
-                                    number="01"
-                                    title="Research & Discovery"
-                                    description="We continuously scan markets for high-friction problems affecting professionals. Our focus areas include legal tech, real estate, finance tools, and B2B SaaS."
-                                    icon={Search}
-                                    delay={0.4}
-                                />
-                                <ProcessStep
-                                    number="02"
-                                    title="Validation"
-                                    description="Before building, we validate demand through signal analysis, competitive positioning, and friction scoring. Only ideas that pass our threshold proceed."
-                                    icon={Target}
-                                    delay={0.5}
-                                />
-                                <ProcessStep
-                                    number="03"
-                                    title="Build & Deploy"
-                                    description="We architect, develop, and deploy products rapidly. Our infrastructure enables us to ship production-ready software in days, not months."
-                                    icon={Hammer}
-                                    delay={0.6}
-                                />
-                                <ProcessStep
-                                    number="04"
-                                    title="Launch & Grow"
-                                    description="Every product gets a strategic launch with targeted distribution. We handle positioning, messaging, and channel optimization."
-                                    icon={Zap}
-                                    delay={0.7}
-                                />
-                                <ProcessStep
-                                    number="05"
-                                    title="Operate & Iterate"
-                                    description="We don't just launch and walk away. Products in our registry receive ongoing optimization, feature development, and performance monitoring."
-                                    icon={Layers}
-                                    delay={0.8}
-                                />
-                            </div>
-                        </div>
-
-                        {/* Infrastructure */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.9 }}
-                            className="mb-16"
-                        >
-                            <h2 className="text-xl font-serif text-white mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-                                Operational Infrastructure
-                            </h2>
-                            <p className="text-sm text-zinc-500 mb-8">
-                                Our multi-agent system powers every stage of the studio lifecycle
-                            </p>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {infrastructureAgents.map((agent, i) => (
-                                    <motion.div
-                                        key={agent.name}
-                                        initial={{ opacity: 0, scale: 0.95 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ delay: 1 + i * 0.1 }}
-                                        className="p-4 rounded-xl bg-zinc-800/50 border border-zinc-700/50"
-                                    >
-                                        <div className="flex items-center gap-3 mb-2">
-                                            <div className={`p-2 rounded-lg bg-${agent.color}-500/20 border border-${agent.color}-500/30`}>
-                                                <agent.icon size={16} className={`text-${agent.color}-400`} />
-                                            </div>
-                                            <div>
-                                                <h4 className="text-sm font-medium text-zinc-200">{agent.name}</h4>
-                                                <p className="text-[10px] font-mono text-zinc-500 uppercase">{agent.role}</p>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </motion.div>
-
-                        {/* CTA */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1.2 }}
-                            className="text-center pt-8 border-t border-zinc-800"
-                        >
-                            <p className="text-zinc-500 mb-6">
-                                See what we're building
-                            </p>
-                            <a
-                                href="/dashboard"
-                                className="inline-flex items-center gap-2 px-6 py-3 bg-white/[0.03] hover:bg-white/[0.06] border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white font-mono text-sm tracking-widest uppercase transition-all"
-                            >
-                                <span>Visit The Lab</span>
-                                <ArrowRight size={14} />
-                            </a>
-                        </motion.div>
-
+                        ))}
                     </div>
                 </div>
+            </section>
 
-                <footer className="border-t border-zinc-900 py-8">
-                    <div className="max-w-4xl mx-auto px-4 flex items-center justify-between">
-                        <p className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">
-                            Stillfrost
-                        </p>
-                        <p className="font-mono text-[10px] text-zinc-600">
-                            Autonomous Venture Studio
-                        </p>
+            {/* Agents */}
+            <section className="py-24 border-t border-white/5">
+                <div className="max-w-6xl mx-auto px-4 md:px-8">
+                    <SectionHeader
+                        label="Infrastructure"
+                        title="Meet the agents"
+                        subtitle="Five specialized AI agents work in coordination to operate the studio around the clock."
+                    />
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {agents.map((agent, index) => (
+                            <motion.div
+                                key={agent.name}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.1 * index }}
+                            >
+                                <AgentCard agent={agent} />
+                            </motion.div>
+                        ))}
                     </div>
-                </footer>
-            </div>
-        </div>
+                </div>
+            </section>
+
+            {/* CTA */}
+            <CTASection
+                label="Work with us"
+                title="Let's build something together"
+                description="Whether you're looking for automation solutions or want to explore partnership opportunities, we'd love to hear from you."
+                primaryCta={{ label: 'Get in touch', href: '/journal' }}
+                dark={false}
+            />
+
+            <Footer />
+        </PageContainer>
     );
 }

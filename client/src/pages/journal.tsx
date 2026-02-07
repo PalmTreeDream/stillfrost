@@ -1,144 +1,168 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Calendar, ArrowRight } from "lucide-react";
-import { Link } from "wouter";
-import GlobalNav from "@/components/GlobalNav";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import {
+    NavBar,
+    Footer,
+    PageContainer,
+    GlassCard,
+    SectionHeader,
+} from '../components/studio';
 
 interface JournalEntry {
+    id: string;
     date: string;
     title: string;
     excerpt: string;
-    category: string;
+    category: 'product' | 'infrastructure' | 'milestone' | 'insight';
+    readTime: string;
 }
 
 const entries: JournalEntry[] = [
     {
-        date: "February 2026",
-        title: "Expanding the Registry",
-        category: "Operations",
-        excerpt: "Stillfrost added three new operational assets to the portfolio this quarter. The studio's focus on high-friction professional workflows continues to drive product development, with particular emphasis on legal tech and real estate tooling.",
+        id: '1',
+        date: 'Feb 6, 2024',
+        title: 'Commission Auditor reaches 2,000 users',
+        excerpt: 'A significant milestone for the studio\'s first product. The team reflects on the journey from concept to scale and shares key learnings.',
+        category: 'milestone',
+        readTime: '4 min',
     },
     {
-        date: "January 2026",
-        title: "Infrastructure Upgrades",
-        category: "Technical",
-        excerpt: "The studio completed a significant overhaul of its operational infrastructure. The multi-agent system now operates with improved coordination, enabling faster research-to-deployment cycles.",
+        id: '2',
+        date: 'Feb 4, 2024',
+        title: 'Introducing Lease Summarizer to The Lab',
+        excerpt: 'Our Intelligence agent identified a pain point in commercial real estate. Systems agent has begun scaffolding the MVP.',
+        category: 'product',
+        readTime: '3 min',
     },
     {
-        date: "December 2025",
-        title: "Year in Review",
-        category: "Strategy",
-        excerpt: "Stillfrost closed its foundational year with a clear thesis: build software products that eliminate repetitive professional tasks. The studio's portfolio approach to product development has proven effective at generating consistent operational revenue.",
+        id: '3',
+        date: 'Feb 1, 2024',
+        title: 'Infrastructure upgrade: Agent orchestration v2',
+        excerpt: 'The Oversight Governor now coordinates all agent outputs through a unified review pipeline, improving quality and consistency.',
+        category: 'infrastructure',
+        readTime: '5 min',
     },
     {
-        date: "November 2025",
-        title: "Thesis Refinement",
-        category: "Strategy",
-        excerpt: "After evaluating dozens of potential product categories, the studio has narrowed its focus to B2B tools serving professionals in regulated industries. These markets exhibit predictable customer behavior and strong willingness to pay.",
+        id: '4',
+        date: 'Jan 28, 2024',
+        title: 'Why we focus on "laptop jobs"',
+        excerpt: 'An exploration of our investment thesis: targeting high-friction, repetitive tasks that professionals waste hours on weekly.',
+        category: 'insight',
+        readTime: '6 min',
+    },
+    {
+        id: '5',
+        date: 'Jan 22, 2024',
+        title: 'Deal Sheet Pro enters The Registry',
+        excerpt: 'After two weeks in incubation, Deal Sheet Pro has graduated to operational status with its first paying customers.',
+        category: 'product',
+        readTime: '3 min',
     },
 ];
 
-const JournalCard = ({ entry, delay }: { entry: JournalEntry; delay: number }) => (
-    <motion.article
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay }}
-        className="p-6 rounded-2xl bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 hover:border-zinc-700 transition-colors"
-    >
-        <div className="flex items-center gap-3 mb-4">
-            <span className="px-2.5 py-1 rounded text-[10px] font-mono font-bold tracking-wider uppercase bg-zinc-800 text-zinc-400 border border-zinc-700">
-                {entry.category}
-            </span>
-            <div className="flex items-center gap-1.5 text-zinc-600">
-                <Calendar size={12} />
-                <span className="text-[10px] font-mono">{entry.date}</span>
-            </div>
-        </div>
+const categoryColors: Record<string, { bg: string; text: string; border: string }> = {
+    product: { bg: 'bg-emerald-500/20', text: 'text-emerald-400', border: 'border-emerald-500/30' },
+    infrastructure: { bg: 'bg-amber-500/20', text: 'text-amber-400', border: 'border-amber-500/30' },
+    milestone: { bg: 'bg-violet-500/20', text: 'text-violet-400', border: 'border-violet-500/30' },
+    insight: { bg: 'bg-cyan-500/20', text: 'text-cyan-400', border: 'border-cyan-500/30' },
+};
 
-        <h2
-            className="text-xl font-serif text-white mb-3"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-        >
-            {entry.title}
-        </h2>
+const JournalCard = ({ entry, index }: { entry: JournalEntry; index: number }) => {
+    const colors = categoryColors[entry.category];
 
-        <p className="text-sm text-zinc-400 leading-relaxed">
-            {entry.excerpt}
-        </p>
-    </motion.article>
-);
-
-export default function JournalPage() {
     return (
-        <div className="min-h-screen w-full bg-black">
-            <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-black to-zinc-950" />
-
-            <div className="absolute inset-0 opacity-[0.02]" style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-            }} />
-
-            <div className="relative z-10">
-                <GlobalNav />
-
-                <div className="pt-24 pb-16 px-4 md:px-8">
-                    <div className="max-w-3xl mx-auto">
-
-                        {/* Header */}
-                        <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="mb-12 text-center"
-                        >
-                            <h1
-                                className="text-4xl md:text-5xl font-serif text-white mb-4"
-                                style={{ fontFamily: "'Playfair Display', serif" }}
-                            >
-                                Studio Journal
-                            </h1>
-                            <p className="text-zinc-500 max-w-xl mx-auto">
-                                Operational updates, strategic thinking, and notes from inside the studio.
-                            </p>
-                        </motion.div>
-
-                        {/* Entries */}
-                        <div className="space-y-6 mb-12">
-                            {entries.map((entry, i) => (
-                                <JournalCard key={entry.title} entry={entry} delay={0.2 + i * 0.1} />
-                            ))}
+        <motion.article
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 * index }}
+        >
+            <GlassCard className="group cursor-pointer">
+                <div className="flex items-center gap-4 mb-4">
+                    <span className={`px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider ${colors.bg} ${colors.text} border ${colors.border}`}>
+                        {entry.category}
+                    </span>
+                    <div className="flex items-center gap-4 text-slate-500 text-xs">
+                        <div className="flex items-center gap-1.5">
+                            <Calendar size={12} />
+                            <span>{entry.date}</span>
                         </div>
-
-                        {/* Navigation */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.6 }}
-                            className="text-center pt-8 border-t border-zinc-800"
-                        >
-                            <p className="text-zinc-600 text-sm mb-6">
-                                More updates as the studio evolves
-                            </p>
-                            <Link href="/registry">
-                                <span className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-mono uppercase tracking-widest border border-zinc-700 transition-colors cursor-pointer">
-                                    <span>View The Registry</span>
-                                    <ArrowRight size={14} />
-                                </span>
-                            </Link>
-                        </motion.div>
-
+                        <div className="flex items-center gap-1.5">
+                            <Clock size={12} />
+                            <span>{entry.readTime}</span>
+                        </div>
                     </div>
                 </div>
 
-                <footer className="border-t border-zinc-900 py-8">
-                    <div className="max-w-3xl mx-auto px-4 flex items-center justify-between">
-                        <p className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">
-                            Stillfrost Journal
+                <h2 className="text-xl font-medium text-white mb-3 group-hover:text-emerald-300 transition-colors">
+                    {entry.title}
+                </h2>
+
+                <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                    {entry.excerpt}
+                </p>
+
+                <div className="flex items-center gap-2 text-sm text-slate-500 group-hover:text-white transition-colors">
+                    <span>Read more</span>
+                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </div>
+            </GlassCard>
+        </motion.article>
+    );
+};
+
+export default function Journal() {
+    return (
+        <PageContainer>
+            <NavBar />
+
+            <div className="pt-32 pb-16 px-4 md:px-8">
+                <div className="max-w-4xl mx-auto">
+
+                    {/* Header */}
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-16 text-center"
+                    >
+                        <p className="text-xs font-medium uppercase tracking-widest text-slate-500 mb-4">
+                            Studio Journal
                         </p>
-                        <p className="font-mono text-[10px] text-zinc-600">
-                            Autonomous Venture Studio
+                        <h1
+                            className="text-4xl md:text-5xl font-medium text-white mb-6"
+                            style={{ fontFamily: "'Inter', sans-serif" }}
+                        >
+                            Building in public
+                        </h1>
+                        <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+                            A transparent look at how we build, launch, and operate software products.
+                            Updates from the studio, published by our agents.
                         </p>
+                    </motion.div>
+
+                    {/* Entries */}
+                    <div className="space-y-6">
+                        {entries.map((entry, index) => (
+                            <JournalCard key={entry.id} entry={entry} index={index} />
+                        ))}
                     </div>
-                </footer>
+
+                    {/* Load More */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.6 }}
+                        className="mt-12 text-center"
+                    >
+                        <button className="px-6 py-3 text-sm font-medium text-slate-400 border border-white/10 rounded-lg hover:bg-white/5 hover:text-white transition-all">
+                            Load more entries
+                        </button>
+                    </motion.div>
+
+                </div>
             </div>
-        </div>
+
+            <Footer />
+        </PageContainer>
     );
 }

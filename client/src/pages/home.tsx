@@ -1,277 +1,121 @@
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "wouter";
+import React from 'react';
 import {
-  Eye,
-  Search,
-  Hammer,
-  Radio,
-  Scale,
-  ChevronRight,
-  Menu,
-  X
-} from "lucide-react";
-
-const agents = [
-  {
-    id: "oversight",
-    name: "OVERSIGHT",
-    role: "Governor",
-    icon: Eye,
-    action: "Reviewing agent outputs...",
-    color: "violet"
-  },
-  {
-    id: "intelligence",
-    name: "INTELLIGENCE",
-    role: "Scout",
-    icon: Search,
-    action: "Scanning for automation opportunities...",
-    color: "cyan"
-  },
-  {
-    id: "systems",
-    name: "SYSTEMS",
-    role: "Forge",
-    icon: Hammer,
-    action: "Scaffolding micro-utility...",
-    color: "amber"
-  },
-  {
-    id: "reach",
-    name: "REACH",
-    role: "Signal",
-    icon: Radio,
-    action: "Drafting market outreach...",
-    color: "emerald"
-  },
-  {
-    id: "logic",
-    name: "LOGIC",
-    role: "Gatekeeper",
-    icon: Scale,
-    action: "Validating Stillfrost Standard...",
-    color: "rose"
-  },
-];
-
-const AgentNode = ({ agent, isActive, delay }: { agent: typeof agents[0]; isActive: boolean; delay: number }) => {
-  const Icon = agent.icon;
-
-  const colorClasses = {
-    violet: { bg: "bg-violet-500/20", border: "border-violet-500/40", text: "text-violet-400", glow: "shadow-violet-500/20" },
-    cyan: { bg: "bg-cyan-500/20", border: "border-cyan-500/40", text: "text-cyan-400", glow: "shadow-cyan-500/20" },
-    amber: { bg: "bg-amber-500/20", border: "border-amber-500/40", text: "text-amber-400", glow: "shadow-amber-500/20" },
-    emerald: { bg: "bg-emerald-500/20", border: "border-emerald-500/40", text: "text-emerald-400", glow: "shadow-emerald-500/20" },
-    rose: { bg: "bg-rose-500/20", border: "border-rose-500/40", text: "text-rose-400", glow: "shadow-rose-500/20" },
-  };
-
-  const colors = colorClasses[agent.color as keyof typeof colorClasses];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay }}
-      className={`relative p-4 rounded-xl border transition-all duration-500 ${isActive
-          ? `${colors.bg} ${colors.border} shadow-lg ${colors.glow}`
-          : "bg-zinc-900/40 border-zinc-800"
-        }`}
-    >
-      <div className="flex items-center gap-3 mb-2">
-        <div className={`p-2 rounded-lg ${isActive ? colors.bg : "bg-zinc-800"} ${isActive ? colors.border : "border-zinc-700"} border`}>
-          <Icon size={16} className={isActive ? colors.text : "text-zinc-500"} />
-        </div>
-        <div>
-          <h3 className={`text-sm font-mono font-bold ${isActive ? colors.text : "text-zinc-500"}`}>
-            {agent.name}
-          </h3>
-          <p className="text-[10px] font-mono text-zinc-600">{agent.role}</p>
-        </div>
-        {isActive && (
-          <span className={`ml-auto w-2 h-2 rounded-full animate-pulse ${colors.text.replace("text-", "bg-")}`} />
-        )}
-      </div>
-
-      <AnimatePresence>
-        {isActive && (
-          <motion.p
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="text-xs text-zinc-400 font-mono mt-2 pl-11"
-          >
-            {agent.action}
-          </motion.p>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-};
+  NavBar,
+  HeroSection,
+  LogoCloud,
+  StatsGrid,
+  CaseStudyCard,
+  CTASection,
+  Footer,
+  PageContainer,
+} from '../components/studio';
+import { Zap, Building2, Layers, TrendingUp, Bot, Workflow } from 'lucide-react';
 
 export default function Home() {
-  const [activeAgent, setActiveAgent] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const logos = [
+    { name: 'Startups', icon: <Zap size={16} /> },
+    { name: 'Enterprise', icon: <Building2 size={16} /> },
+    { name: 'Agencies', icon: <Layers size={16} /> },
+    { name: 'Investors', icon: <TrendingUp size={16} /> },
+    { name: 'Operators', icon: <Bot size={16} /> },
+    { name: 'Builders', icon: <Workflow size={16} /> },
+  ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveAgent((prev) => (prev + 1) % agents.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  const stats = [
+    { value: '$4,200/mo', label: 'Avg. cost savings per team', sublabel: 'from manual work' },
+    { value: '82', label: 'Hours saved', sublabel: 'per month average' },
+    { value: '4x', label: 'Efficiency boost', sublabel: 'vs traditional teams' },
+    { value: '24/7', label: 'Uptime', sublabel: 'autonomous operation' },
+  ];
+
+  const caseStudies = [
+    {
+      category: 'Finance Ops',
+      title: 'Monthly Report Automation',
+      description: 'Automated financial reporting that runs on schedule, synthesizes data from multiple sources, and delivers insights directly to stakeholders.',
+      metrics: [
+        { label: 'Time saved', value: '40hrs/mo' },
+        { label: 'Accuracy', value: '99.9%' },
+      ],
+    },
+    {
+      category: 'Growth',
+      title: 'Lead Intelligence Pipeline',
+      description: 'AI-powered lead scoring and enrichment that identifies high-intent prospects and prioritizes outreach automatically.',
+      metrics: [
+        { label: 'Qualified leads', value: '+340%' },
+        { label: 'Response time', value: '<5min' },
+      ],
+    },
+    {
+      category: 'Operations',
+      title: 'Workflow Orchestration',
+      description: 'End-to-end process automation that connects your tools, monitors for exceptions, and escalates intelligently.',
+      metrics: [
+        { label: 'Processes automated', value: '47' },
+        { label: 'Error reduction', value: '92%' },
+      ],
+    },
+  ];
 
   return (
-    <div className="min-h-screen w-full bg-black overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-black to-zinc-950" />
+    <PageContainer>
+      <NavBar transparent />
 
-      <div className="absolute inset-0 opacity-[0.015]" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-      }} />
+      <HeroSection
+        label="Introducing Stillfrost"
+        title="Reimagine work with autonomous AI agents"
+        subtitle="Your on-demand AI workforce. Automate routine tasks, streamline decision-making, and free your team to focus on what matters most."
+        primaryCta={{ label: 'Get started', href: '/dashboard' }}
+        secondaryCta={{ label: 'View use cases', href: '/registry' }}
+      />
 
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="font-serif text-lg text-white tracking-tight"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            STILLFROST
-          </motion.span>
+      <LogoCloud label="Trusted by forward-thinking teams" logos={logos} />
 
-          <div className="hidden md:flex items-center gap-8">
-            {["The Lab", "Registry", "About", "Journal"].map((item, i) => (
-              <Link
-                key={item}
-                href={item === "The Lab" ? "/dashboard" : item === "Registry" ? "/registry" : item === "About" ? "/about" : "/journal"}
+      <StatsGrid
+        label="Real numbers"
+        title="Automation that pays for itself, fast"
+        stats={stats}
+        dark
+      />
+
+      {/* Case Studies Section */}
+      <section className="py-24 bg-slate-950">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 mb-16">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-widest text-slate-500 mb-4">
+                Use Cases
+              </p>
+              <h2
+                className="text-3xl md:text-4xl lg:text-5xl font-medium text-white"
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                <motion.span
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-                  className="font-mono text-xs text-zinc-500 hover:text-zinc-300 uppercase tracking-widest cursor-pointer transition-colors"
-                >
-                  {item}
-                </motion.span>
-              </Link>
-            ))}
-          </div>
-
-          <button
-            className="md:hidden p-2 text-zinc-500"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </nav>
-
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/95 pt-20 px-6 md:hidden"
-          >
-            <div className="flex flex-col gap-6">
-              {["Dashboard", "Registry", "Protocol"].map((item) => (
-                <Link
-                  key={item}
-                  href={item === "Dashboard" ? "/dashboard" : item === "Registry" ? "/registry" : "#"}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span className="text-2xl font-serif text-white">{item}</span>
-                </Link>
-              ))}
+                Real workflows.<br />Real impact.
+              </h2>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6">
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2 }}
-          className="text-center mb-16"
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, delay: 0.3 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium text-white mb-8"
-            style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.02em" }}
-          >
-            STILLFROST
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.5, delay: 0.8 }}
-            className="text-base md:text-lg text-zinc-500 max-w-xl mx-auto leading-relaxed font-light"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            We build, launch, and operate software products autonomously.
-            Our portfolio of tools solves high-friction problems for professionals.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.2 }}
-          className="w-full max-w-2xl mb-16"
-        >
-          <div className="mb-6 flex items-center justify-center gap-3">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-mono text-xs text-zinc-600 uppercase tracking-widest">
-              Studio Operations Active
-            </span>
+            <p className="text-lg text-slate-400 max-w-md">
+              See how teams use Stillfrost to automate complex workflows and focus on high-value work.
+            </p>
           </div>
 
-          <div className="space-y-3">
-            {agents.map((agent, index) => (
-              <AgentNode
-                key={agent.id}
-                agent={agent}
-                isActive={index === activeAgent}
-                delay={1.4 + index * 0.1}
-              />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {caseStudies.map((study, index) => (
+              <CaseStudyCard key={index} {...study} />
             ))}
           </div>
-        </motion.div>
+        </div>
+      </section>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 2 }}
-        >
-          <Link href="/registry">
-            <button
-              className="group flex items-center gap-3 px-8 py-4 bg-white/[0.03] hover:bg-white/[0.06] border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white font-mono text-sm tracking-widest uppercase transition-all duration-300"
-              data-testid="button-view-portfolio"
-            >
-              <span>View Our Portfolio</span>
-              <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-          </Link>
-        </motion.div>
+      <CTASection
+        label="We're hiring"
+        title="Come build with us"
+        description="At Stillfrost, we're not building just another tool. We're building an entirely new way to get done at the mid-market—powered by intelligent, autonomous agents."
+        primaryCta={{ label: 'View open roles', href: '/about' }}
+        dark={false}
+      />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          transition={{ duration: 2, delay: 2.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
-          <p className="font-mono text-[10px] text-zinc-700 uppercase tracking-widest">
-            Autonomous Venture Studio
-          </p>
-        </motion.div>
-      </div>
-    </div>
+      <Footer />
+    </PageContainer>
   );
 }

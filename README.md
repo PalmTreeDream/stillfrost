@@ -1,2 +1,0 @@
-# Stillfrost
-Autonomous Venture Studio

@@ -1,0 +1,63 @@
+The goal is a "Staff-less Micro-Utility Factory." Instead of large, complex platforms, the system builds specialized Single-Page Apps (SPAs) that automate specific "Laptop Jobs"—the repetitive, high-friction tasks professionals currently perform manually in Finance, Real Estate, and Tech.
+
+The Idea: Stillfrost Autonomous Labor Factory
+The system identifies a workflow "Secret" (a manual pain point), builds a minimalist utility to solve it, and launches it to a specific Peer Group on Twitter.
+
+Product Examples:
+
+The Commission Auditor: A tool for real estate agents to calculate complex tiered splits and tax liabilities instantly.
+
+The Lease Summarizer: A legal-tech utility that flags "Predatory Clauses" in standard lease agreements.
+
+The Deal-Sheet Formatter: A finance tool that turns raw CSV data into a clean, high-status investment memo.
+
+---
+The Stillfrost Cost-Optimization Strategy
+We prevent "bill shock" by using a Hybrid Intelligence Model:
+
+The "Worker" Layer ($): We use GPT-4o mini or Claude 3.5 Haiku for 90% of tasks like scanning Twitter or formatting logs. These cost pennies per million tokens.
+
+The "Brain" Layer ($$$): We only wake up Claude 3.5 Sonnet or GPT-4o for high-stakes logic, like final code generation or auditing a high-value "Node" outreach.
+
+Watchdog Protocols: Stillfrost Oversight acts as a cost-governor. If an agent enters a loop or exceeds a token threshold (e.g., $2.00 on a single task), the system kills the process and alerts you in The Vault.
+----
+Objective: Build the Stillfrost Autonomous Backend with Integrated Cost-Governance.
+
+1. File Structure Architecture:
+
+main.py: The entry point that manages the daily "Creation & Marketing" loop.
+
+agents.py: Defines Oversight, Intelligence, Systems, and Reach using CrewAI.
+
+governor.py: Implements the StillfrostCostGovernor circuit-breaker logic.
+
+tasks.py: Defines the specific "Advice Trap" and "Micro-SaaS Scaffolding" tasks.
+
+2. Autonomous Workflow:
+
+Daily Trigger: Every 24 hours, Stillfrost Intelligence scans for a manual pain point (the "Secret") in the Toronto Real Estate or Finance niche.
+
+Tiered Intelligence: Use gpt-4o-mini for Scouting and claude-3-5-sonnet for the final Code generation and Audit.
+
+Standard Enforcer: Stillfrost Logic must reject any output that doesn't meet The Stillfrost Standard (zero digital rubbish, high-friction signals only).
+
+3. Human-in-the-Loop Gate:
+
+No Twitter thread or code deployment can happen without Principal Authorization.
+
+The system must display the "Estimated Cost" of the current run alongside the draft in The Vault.
+
+4. Telemetry:
+
+Stream the "Thought Stream" and "Live Spend Tracker" to the Dashboard UI via WebSockets.
+
+5. Security: Use .env secrets for all API keys (OpenAI, Anthropic, Twitter, Serper).
+
+3. Roles Recap: The Stillfrost Workforce
+Stillfrost Oversight (The Governor): Manages the budget and triages your "Big Rock" directives using the 80/20 Rule.
+
+Stillfrost Intelligence (The Scout): Finds the "Secret"—the repetitive task people are complaining about on Twitter/Reddit.
+
+Stillfrost Systems (The Forge): Automatically scaffolds and deploys the Micro-Utility (e.g., a tiered commission calculator or a lease auditor).
+
+Stillfrost Reach (The Signal): Executes the Advice Trap on Twitter, building relationships with high-status "Nodes" by seeking feedback on the new tool.

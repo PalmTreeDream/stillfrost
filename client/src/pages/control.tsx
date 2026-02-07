@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { 
-  Shield, 
-  ArrowLeft, 
-  LogOut, 
-  User, 
+import {
+  Shield,
+  ArrowLeft,
+  LogOut,
+  User,
   Lock,
   Check,
   X,
@@ -37,14 +37,14 @@ const GlassCard = ({ children, className = "", delay = 0 }: { children: React.Re
   </motion.div>
 );
 
-const VaultItem = ({ 
-  item, 
-  onAuthorize, 
+const VaultItem = ({
+  item,
+  onAuthorize,
   onReject,
-  isLoading 
-}: { 
-  item: PendingApproval; 
-  onAuthorize: () => void; 
+  isLoading
+}: {
+  item: PendingApproval;
+  onAuthorize: () => void;
   onReject: () => void;
   isLoading: boolean;
 }) => (
@@ -59,13 +59,13 @@ const VaultItem = ({
         <span>${item.estimatedCost}</span>
       </div>
     </div>
-    
+
     {item.content?.description && (
       <p className="text-xs text-zinc-400 mb-3">{item.content.description}</p>
     )}
-    
+
     <div className="flex gap-2">
-      <button 
+      <button
         onClick={onAuthorize}
         disabled={isLoading}
         className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 text-xs font-mono font-bold rounded border border-emerald-500/30 transition-colors disabled:opacity-50"
@@ -74,7 +74,7 @@ const VaultItem = ({
         <Check size={12} />
         AUTHORIZE
       </button>
-      <button 
+      <button
         onClick={onReject}
         disabled={isLoading}
         className="flex items-center justify-center gap-2 px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-mono rounded border border-red-500/20 transition-colors disabled:opacity-50"
@@ -147,7 +147,7 @@ const ControlPage = () => {
   return (
     <div className="min-h-screen bg-black" data-testid="control-page">
       <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-black to-zinc-950" />
-      
+
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-8">
         <motion.header
           initial={{ opacity: 0, y: -20 }}
@@ -158,7 +158,7 @@ const ControlPage = () => {
             <Link href="/dashboard">
               <button className="flex items-center gap-2 px-3 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 transition-colors text-sm" data-testid="back-to-dashboard">
                 <ArrowLeft size={16} />
-                <span>Terminal</span>
+                <span>The Lab</span>
               </button>
             </Link>
             <div className="flex items-center gap-3">
@@ -198,7 +198,7 @@ const ControlPage = () => {
         </motion.header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          
+
           <GlassCard delay={0.1}>
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-violet-500/20 rounded-lg border border-violet-500/30">
@@ -211,7 +211,7 @@ const ControlPage = () => {
                 </p>
               </div>
             </div>
-            
+
             {pendingLoading ? (
               <div className="text-center py-8">
                 <div className="w-6 h-6 border-2 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto" />
@@ -263,7 +263,7 @@ const ControlPage = () => {
                   data-testid="directive-input"
                 />
               </div>
-              
+
               <button
                 onClick={() => directiveMutation.mutate(directive)}
                 disabled={!directive.trim() || directiveMutation.isPending}
@@ -273,7 +273,7 @@ const ControlPage = () => {
                 <Send size={14} />
                 {directiveMutation.isPending ? "Injecting..." : "Inject Directive"}
               </button>
-              
+
               <p className="text-[10px] text-zinc-600 text-center">
                 Directives are injected into the Oversight Governor's context memory
               </p>

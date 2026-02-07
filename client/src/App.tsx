@@ -8,6 +8,8 @@ import Home from "@/pages/home";
 import Dashboard from "@/pages/dashboard";
 import RegistryPage from "@/pages/registry";
 import ControlPage from "@/pages/control";
+import AboutPage from "@/pages/about";
+import JournalPage from "@/pages/journal";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +18,8 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/registry" component={RegistryPage} />
+      <Route path="/about" component={AboutPage} />
+      <Route path="/journal" component={JournalPage} />
       <Route path="/control" component={ControlPage} />
       <Route component={NotFound} />
     </Switch>

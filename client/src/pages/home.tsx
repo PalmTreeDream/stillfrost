@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { 
-  Eye, 
-  Search, 
-  Hammer, 
-  Radio, 
+import {
+  Eye,
+  Search,
+  Hammer,
+  Radio,
   Scale,
   ChevronRight,
   Menu,
@@ -13,41 +13,41 @@ import {
 } from "lucide-react";
 
 const agents = [
-  { 
-    id: "oversight", 
-    name: "OVERSIGHT", 
+  {
+    id: "oversight",
+    name: "OVERSIGHT",
     role: "Governor",
     icon: Eye,
     action: "Reviewing agent outputs...",
     color: "violet"
   },
-  { 
-    id: "intelligence", 
-    name: "INTELLIGENCE", 
+  {
+    id: "intelligence",
+    name: "INTELLIGENCE",
     role: "Scout",
     icon: Search,
     action: "Scanning for automation opportunities...",
     color: "cyan"
   },
-  { 
-    id: "systems", 
-    name: "SYSTEMS", 
+  {
+    id: "systems",
+    name: "SYSTEMS",
     role: "Forge",
     icon: Hammer,
     action: "Scaffolding micro-utility...",
     color: "amber"
   },
-  { 
-    id: "reach", 
-    name: "REACH", 
+  {
+    id: "reach",
+    name: "REACH",
     role: "Signal",
     icon: Radio,
     action: "Drafting market outreach...",
     color: "emerald"
   },
-  { 
-    id: "logic", 
-    name: "LOGIC", 
+  {
+    id: "logic",
+    name: "LOGIC",
     role: "Gatekeeper",
     icon: Scale,
     action: "Validating Stillfrost Standard...",
@@ -57,7 +57,7 @@ const agents = [
 
 const AgentNode = ({ agent, isActive, delay }: { agent: typeof agents[0]; isActive: boolean; delay: number }) => {
   const Icon = agent.icon;
-  
+
   const colorClasses = {
     violet: { bg: "bg-violet-500/20", border: "border-violet-500/40", text: "text-violet-400", glow: "shadow-violet-500/20" },
     cyan: { bg: "bg-cyan-500/20", border: "border-cyan-500/40", text: "text-cyan-400", glow: "shadow-cyan-500/20" },
@@ -65,7 +65,7 @@ const AgentNode = ({ agent, isActive, delay }: { agent: typeof agents[0]; isActi
     emerald: { bg: "bg-emerald-500/20", border: "border-emerald-500/40", text: "text-emerald-400", glow: "shadow-emerald-500/20" },
     rose: { bg: "bg-rose-500/20", border: "border-rose-500/40", text: "text-rose-400", glow: "shadow-rose-500/20" },
   };
-  
+
   const colors = colorClasses[agent.color as keyof typeof colorClasses];
 
   return (
@@ -73,11 +73,10 @@ const AgentNode = ({ agent, isActive, delay }: { agent: typeof agents[0]; isActi
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay }}
-      className={`relative p-4 rounded-xl border transition-all duration-500 ${
-        isActive 
-          ? `${colors.bg} ${colors.border} shadow-lg ${colors.glow}` 
+      className={`relative p-4 rounded-xl border transition-all duration-500 ${isActive
+          ? `${colors.bg} ${colors.border} shadow-lg ${colors.glow}`
           : "bg-zinc-900/40 border-zinc-800"
-      }`}
+        }`}
     >
       <div className="flex items-center gap-3 mb-2">
         <div className={`p-2 rounded-lg ${isActive ? colors.bg : "bg-zinc-800"} ${isActive ? colors.border : "border-zinc-700"} border`}>
@@ -93,7 +92,7 @@ const AgentNode = ({ agent, isActive, delay }: { agent: typeof agents[0]; isActi
           <span className={`ml-auto w-2 h-2 rounded-full animate-pulse ${colors.text.replace("text-", "bg-")}`} />
         )}
       </div>
-      
+
       <AnimatePresence>
         {isActive && (
           <motion.p
@@ -124,7 +123,7 @@ export default function Home() {
   return (
     <div className="min-h-screen w-full bg-black overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-black to-zinc-950" />
-      
+
       <div className="absolute inset-0 opacity-[0.015]" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
       }} />
@@ -140,12 +139,12 @@ export default function Home() {
           >
             STILLFROST
           </motion.span>
-          
+
           <div className="hidden md:flex items-center gap-8">
-            {["Dashboard", "Registry", "Protocol"].map((item, i) => (
-              <Link 
-                key={item} 
-                href={item === "Dashboard" ? "/dashboard" : item === "Registry" ? "/registry" : "#"}
+            {["The Lab", "Registry", "About", "Journal"].map((item, i) => (
+              <Link
+                key={item}
+                href={item === "The Lab" ? "/dashboard" : item === "Registry" ? "/registry" : item === "About" ? "/about" : "/journal"}
               >
                 <motion.span
                   initial={{ opacity: 0, y: -10 }}
@@ -159,7 +158,7 @@ export default function Home() {
             ))}
           </div>
 
-          <button 
+          <button
             className="md:hidden p-2 text-zinc-500"
             onClick={() => setMenuOpen(!menuOpen)}
           >
@@ -178,8 +177,8 @@ export default function Home() {
           >
             <div className="flex flex-col gap-6">
               {["Dashboard", "Registry", "Protocol"].map((item) => (
-                <Link 
-                  key={item} 
+                <Link
+                  key={item}
                   href={item === "Dashboard" ? "/dashboard" : item === "Registry" ? "/registry" : "#"}
                   onClick={() => setMenuOpen(false)}
                 >
@@ -192,7 +191,7 @@ export default function Home() {
       </AnimatePresence>
 
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6">
-        
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -208,7 +207,7 @@ export default function Home() {
           >
             STILLFROST
           </motion.h1>
-          
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -216,8 +215,8 @@ export default function Home() {
             className="text-base md:text-lg text-zinc-500 max-w-xl mx-auto leading-relaxed font-light"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            The staff-less future is definite. We don't hunt for opportunities; 
-            we crystallize them through capitalized autonomy.
+            We build, launch, and operate software products autonomously.
+            Our portfolio of tools solves high-friction problems for professionals.
           </motion.p>
         </motion.div>
 
@@ -230,13 +229,13 @@ export default function Home() {
           <div className="mb-6 flex items-center justify-center gap-3">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="font-mono text-xs text-zinc-600 uppercase tracking-widest">
-              Synthetic Workforce Active
+              Studio Operations Active
             </span>
           </div>
-          
+
           <div className="space-y-3">
             {agents.map((agent, index) => (
-              <AgentNode 
+              <AgentNode
                 key={agent.id}
                 agent={agent}
                 isActive={index === activeAgent}
@@ -251,12 +250,12 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 2 }}
         >
-          <Link href="/dashboard">
-            <button 
+          <Link href="/registry">
+            <button
               className="group flex items-center gap-3 px-8 py-4 bg-white/[0.03] hover:bg-white/[0.06] border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white font-mono text-sm tracking-widest uppercase transition-all duration-300"
-              data-testid="button-enter-terminal"
+              data-testid="button-view-portfolio"
             >
-              <span>Enter Terminal</span>
+              <span>View Our Portfolio</span>
               <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </Link>
@@ -269,7 +268,7 @@ export default function Home() {
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
           <p className="font-mono text-[10px] text-zinc-700 uppercase tracking-widest">
-            Staff-less Micro-Utility Factory
+            Autonomous Venture Studio
           </p>
         </motion.div>
       </div>

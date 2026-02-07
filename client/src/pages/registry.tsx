@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { 
-  Globe, 
-  ArrowUpRight, 
+import {
+  Globe,
+  ArrowUpRight,
   ExternalLink,
   Calendar,
   TrendingUp,
@@ -40,9 +40,9 @@ const AssetCard = ({ name, description, category, launchDate, metrics, link, del
         Operational
       </span>
     </div>
-    
+
     <p className="text-sm text-zinc-400 leading-relaxed mb-6">{description}</p>
-    
+
     <div className="grid grid-cols-3 gap-4 mb-6">
       {metrics.map((metric, i) => (
         <div key={i} className="text-center p-3 rounded-lg bg-zinc-800/50">
@@ -51,16 +51,16 @@ const AssetCard = ({ name, description, category, launchDate, metrics, link, del
         </div>
       ))}
     </div>
-    
+
     <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
       <div className="flex items-center gap-2 text-zinc-600">
         <Calendar size={12} />
         <span className="text-[10px] font-mono">Launched {launchDate}</span>
       </div>
       {link && (
-        <a 
-          href={link} 
-          target="_blank" 
+        <a
+          href={link}
+          target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 text-zinc-400 hover:text-white text-xs font-mono transition-colors"
         >
@@ -115,18 +115,18 @@ export default function Registry() {
   return (
     <div className="min-h-screen w-full bg-black">
       <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-black to-zinc-950" />
-      
+
       <div className="absolute inset-0 opacity-[0.02]" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
       }} />
-      
+
       <div className="relative z-10">
         <GlobalNav />
-        
+
         <div className="pt-24 pb-16 px-4 md:px-8">
           <div className="max-w-6xl mx-auto">
-            
-            <motion.div 
+
+            <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mb-12 text-center"
@@ -138,15 +138,15 @@ export default function Registry() {
                 </h1>
               </div>
               <p className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-2">
-                Operational Asset Portfolio
+                Products We Own & Operate
               </p>
               <p className="text-sm text-zinc-400 max-w-xl mx-auto">
-                Autonomous micro-utilities deployed by the Stillfrost synthetic workforce.
-                Each asset solves a specific high-friction "laptop job" for professionals.
+                Each product in our portfolio was conceived, built, and launched by Stillfrost.
+                We operate these products indefinitely as part of our software asset portfolio.
               </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -193,7 +193,7 @@ export default function Registry() {
               Stillfrost Registry
             </p>
             <p className="font-mono text-[10px] text-zinc-600">
-              Staff-less Micro-Utility Factory
+              Autonomous Venture Studio
             </p>
           </div>
         </footer>

@@ -1,110 +1,105 @@
-import React from 'react';
-import { Link } from 'wouter';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'wouter';
+import { Menu, X, ArrowRight } from 'lucide-react';
 
-interface NavBarProps {
-    transparent?: boolean;
-}
+export const NavBar = () => {
+    const [scrolled, setScrolled] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [location] = useLocation();
 
-export const NavBar: React.FC<NavBarProps> = ({ transparent = false }) => {
-    const [scrolled, setScrolled] = React.useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-
-    React.useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 20);
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const navLinks = [
-        { label: 'Use cases', href: '/registry' },
-        { label: 'About', href: '/about' },
-        { label: 'Journal', href: '/journal' },
-        { label: 'Contact', href: '/about' },
+        { name: 'Systems', href: '#systems' },
+        { name: 'Research', href: '#research' },
+        { name: 'Products', href: '#products' },
+        { name: 'About', href: '#about' },
     ];
+
+    const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+        setMobileMenuOpen(false);
+    };
 
     return (
         <>
             <motion.nav
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-                className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled || !transparent
-                        ? 'bg-slate-950/90 backdrop-blur-xl border-b border-white/5'
-                        : 'bg-transparent'
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass-nav py-4' : 'bg-transparent py-6'
                     }`}
             >
-                <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between">
+
                     {/* Logo */}
                     <Link href="/">
-                        <div className="flex items-center gap-3 cursor-pointer group">
-                            <div className="w-8 h-8 bg-gradient-to-br from-white/20 to-white/5 rounded-lg flex items-center justify-center border border-white/10">
-                                <span className="text-white font-bold text-sm">S</span>
-                            </div>
-                            <span className="text-white font-medium text-lg tracking-tight">
-                                Stillfrost
+                        <a className="flex items-center gap-2 group cursor-pointer">
+                            <div className="w-1.5 h-1.5 bg-[#58a6ff] rounded-sm transform rotate-45 group-hover:rotate-90 transition-transform duration-500" />
+                            <span className="font-sans font-medium text-[#e6edf3] tracking-tight">
+                                StillFrost
                             </span>
-                        </div>
+                        </a>
                     </Link>
 
-                    {/* Desktop Navigation */}
+                    {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-8">
                         {navLinks.map((link) => (
-                            <Link key={link.href} href={link.href}>
-                                <span className="text-slate-400 hover:text-white text-sm font-medium transition-colors cursor-pointer">
-                                    {link.label}
-                                </span>
-                            </Link>
+                            <a
+                                key={link.name}
+                                href={link.href}
+                                onClick={(e) => handleScrollTo(e, link.href.substring(1))}
+                                className="text-sm font-medium text-[#8b949e] hover:text-[#58a6ff] transition-colors"
+                            >
+                                {link.name}
+                            </a>
                         ))}
                     </div>
 
-                    {/* CTA Button */}
-                    <div className="hidden md:block">
-                        <Link href="/dashboard">
-                            <button className="px-5 py-2.5 bg-white text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-100 transition-colors">
-                                Get started
-                            </button>
-                        </Link>
-                    </div>
-
-                    {/* Mobile Menu Button */}
+                    {/* Mobile Toggle */}
                     <button
-                        className="md:hidden p-2 text-white"
+                        className="md:hidden text-[#e6edf3]"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            {mobileMenuOpen ? (
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            ) : (
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                            )}
-                        </svg>
+                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
                 </div>
             </motion.nav>
 
             {/* Mobile Menu */}
-            {mobileMenuOpen && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-40 bg-slate-950/98 pt-24 px-6 md:hidden"
-                >
-                    <div className="flex flex-col gap-6">
-                        {navLinks.map((link) => (
-                            <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)}>
-                                <span className="text-white text-2xl font-medium">{link.label}</span>
-                            </Link>
-                        ))}
-                        <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-                            <button className="w-full px-5 py-3 bg-white text-slate-900 text-lg font-medium rounded-lg mt-4">
-                                Get started
-                            </button>
-                        </Link>
-                    </div>
-                </motion.div>
-            )}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="fixed inset-0 z-40 bg-[#06080d] pt-24 px-6 md:hidden"
+                    >
+                        <div className="flex flex-col gap-6">
+                            {navLinks.map((link) => (
+                                <a
+                                    key={link.name}
+                                    href={link.href}
+                                    onClick={(e) => handleScrollTo(e, link.href.substring(1))}
+                                    className="text-2xl font-medium text-[#e6edf3]"
+                                >
+                                    {link.name}
+                                </a>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 };

@@ -1,130 +1,183 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface Project {
+  id: string;
   name: string;
   description: string;
-  status: "Live" | "In Development" | "Coming Soon";
+  status: "Live" | "In Dev" | "Soon";
   tags: string[];
   url?: string;
+  year: string;
 }
 
 const PROJECTS: Project[] = [
   {
+    id: "SF-001",
     name: "AssetHunter.io",
-    description: "Micro-PE deal intelligence across 14+ app stores",
+    description: "Multi-store intelligence for micro-PE deals. Scanning 14+ platform ecosystems in real-time.",
     status: "Live",
-    tags: ["Web", "SaaS"],
+    tags: ["Web", "SaaS", "FinTech"],
     url: "https://assethunter.io",
+    year: "2024",
   },
   {
+    id: "SF-002",
     name: "Wrist Reads",
-    description: "Standalone reading app for Apple Watch",
+    description: "Optimized typography for wearable computing. The world's first standalone long-form reader for Apple Watch.",
     status: "Live",
-    tags: ["watchOS", "iOS"],
+    tags: ["watchOS", "iOS", "Consumer"],
     url: "https://apps.apple.com/app/wrist-reads",
+    year: "2025",
   },
   {
+    id: "SF-003",
     name: "Watch Study",
-    description: "Flashcard learning on your wrist",
-    status: "Coming Soon",
-    tags: ["watchOS", "iOS"],
+    description: "Active recall systems for wrist-based learning. Converting idle moments into knowledge retention.",
+    status: "Soon",
+    tags: ["watchOS", "iOS", "Education"],
+    year: "2026",
   },
 ];
 
 const StatusBadge = ({ status }: { status: Project["status"] }) => {
-  const dotColor = {
-    Live: "bg-green-500",
-    "In Development": "bg-amber-500",
-    "Coming Soon": "bg-zinc-500",
+  const meta = {
+    Live: { color: "bg-white", label: "OPERATIONAL" },
+    "In Dev": { color: "bg-amber-500", label: "DEVELOPMENT" },
+    Soon: { color: "bg-zinc-800", label: "PENDING" },
   }[status];
 
   return (
-    <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-zinc-500">
-      <div className={`h-1.5 w-1.5 ${dotColor}`} />
-      {status}
+    <div className="flex items-center gap-3">
+      <div className={`h-[2px] w-4 ${meta.color}`} />
+      <span className="text-[9px] font-mono tracking-technical text-zinc-500 uppercase">
+        {meta.label}
+      </span>
     </div>
   );
 };
 
 export default function Home() {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      }));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-12 md:px-24 md:py-24 flex flex-col gap-24 max-w-6xl mx-auto">
-      {/* Header */}
-      <header className="fade-in">
-        <h1 className="text-xl md:text-2xl font-serif font-bold uppercase tracking-[0.2em]">
-          STILLFROST
-        </h1>
-      </header>
+    <div className="min-h-screen bg-black text-white relative selection:bg-white selection:text-black">
+      <div className="noise" />
 
-      {/* Hero */}
-      <section className="fade-in" style={{ animationDelay: "0.1s" }}>
-        <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500 mb-2">
-          PRODUCT STUDIO
-        </p>
-        <p className="text-zinc-200 text-lg md:text-xl max-w-xl leading-relaxed">
-          We build tools for finance, productivity, and consumer markets.
-        </p>
-      </section>
+      {/* Top Border Bar */}
+      <div className="fixed top-0 left-0 w-full h-px bg-zinc-900 z-50" />
 
-      {/* Projects */}
-      <section className="fade-in flex flex-col gap-12" style={{ animationDelay: "0.2s" }}>
-        <h2 className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500">
-          PROJECTS
-        </h2>
+      <main className="max-w-[1400px] mx-auto px-6 md:px-12 py-12 md:py-24 flex flex-col min-h-screen">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-800 border-zinc-800">
-          {PROJECTS.map((project, index) => {
-            const CardContent = (
-              <div className="bg-black p-8 flex flex-col gap-6 h-full transition-all duration-300 hover:bg-zinc-950 group relative">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xl font-serif">{project.name}</h3>
-                  <p className="text-zinc-400 text-sm leading-relaxed">
-                    {project.description}
-                  </p>
-                </div>
+        {/* Header Navigation */}
+        <header className="flex justify-between items-baseline mb-32 fade-in">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-serif font-bold uppercase tracking-luxury">
+              STILLFROST
+            </h1>
+          </div>
+          <div className="hidden md:flex flex-col items-end font-mono text-[10px] text-zinc-600 tracking-technical">
+            <span>INDEX v2.0</span>
+            <span>{time} UTC</span>
+          </div>
+        </header>
 
-                <div className="mt-auto flex flex-col gap-4">
-                  <StatusBadge status={project.status} />
+        {/* Hero Section */}
+        <section className="mb-48 md:mb-64 fade-in" style={{ animationDelay: "0.2s" }}>
+          <div className="flex flex-col gap-8 max-w-3xl">
+            <span className="text-[10px] font-mono tracking-luxury text-zinc-600 uppercase">
+              // INDEPENDENT PRODUCT STUDIO
+            </span>
+            <h2 className="text-4xl md:text-7xl font-serif leading-[1.1] md:leading-[1.05]">
+              Building tools for finance, productivity, and the consumer web.
+            </h2>
+          </div>
+        </section>
 
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[9px] font-mono border border-zinc-800 px-2 py-0.5 text-zinc-500 whitespace-nowrap"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+        {/* Projects Section */}
+        <section className="flex flex-col gap-24 mb-32">
+          <div className="flex justify-between items-end border-b border-zinc-900 pb-8 fade-in" style={{ animationDelay: "0.4s" }}>
+            <h3 className="text-[10px] font-mono tracking-luxury text-zinc-600 uppercase">
+              SELECTED WORKS [001—003]
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {PROJECTS.map((project, index) => {
+              const content = (
+                <div className="group h-full flex flex-col border border-zinc-900 p-8 transition-colors duration-500 hover:border-zinc-500 relative bg-[#050505]">
+                  {/* Project ID & Year */}
+                  <div className="flex justify-between items-start mb-12">
+                    <span className="text-[10px] font-mono text-zinc-700 tracking-widest">{project.id}</span>
+                    <span className="text-[10px] font-mono text-zinc-700">{project.year}</span>
+                  </div>
+
+                  {/* Body */}
+                  <div className="flex-grow mb-12">
+                    <h4 className="text-2xl font-serif mb-4 group-hover:italic transition-all duration-300">
+                      {project.name}
+                    </h4>
+                    <p className="text-zinc-500 text-sm leading-relaxed max-w-[280px]">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex flex-col gap-6 pt-6 border-t border-zinc-900">
+                    <StatusBadge status={project.status} />
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map(tag => (
+                        <span key={tag} className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest px-2 py-1 border border-zinc-900 group-hover:border-zinc-800 transition-colors">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-
-            if (project.url) {
-              return (
-                <a
-                  key={project.name}
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block h-full"
-                >
-                  {CardContent}
-                </a>
               );
-            }
 
-            return <div key={project.name}>{CardContent}</div>;
-          })}
-        </div>
-      </section>
+              return (
+                <div
+                  key={project.id}
+                  className="fade-in"
+                  style={{ animationDelay: `${0.5 + index * 0.1}s` }}
+                >
+                  {project.url ? (
+                    <a href={project.url} target="_blank" rel="noopener noreferrer" className="block h-full cursor-none">
+                      {content}
+                    </a>
+                  ) : content}
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
-      {/* Footer */}
-      <footer className="fade-in mt-auto py-12 border-t border-zinc-900 flex justify-center" style={{ animationDelay: "0.3s" }}>
-        <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
-          StillFrost &copy; 2026
-        </p>
-      </footer>
+        {/* Closing Footer */}
+        <footer className="mt-auto pt-24 border-t border-zinc-900 flex flex-col md:flex-row justify-between gap-8 fade-in" style={{ animationDelay: "1s" }}>
+          <div className="flex flex-col gap-2">
+            <span className="text-[9px] font-mono text-zinc-700 tracking-widest uppercase italic">
+              STILLFROST &copy; 2026. ALL RIGHTS RESERVED.
+            </span>
+          </div>
+          <div className="text-[9px] font-mono text-zinc-800 tracking-technical uppercase text-right">
+            Based in the Digital Void.
+          </div>
+        </footer>
+      </main>
     </div>
   );
 }

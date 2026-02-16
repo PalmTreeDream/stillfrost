@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
 
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -6,94 +6,159 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-serif: "Playfair Display", serif;
-  --font-mono: "JetBrains Mono", monospace;
-  --font-sans: "Inter", sans-serif;
+    --font-serif: "Playfair Display", serif;
+    --font-mono: "JetBrains Mono", monospace;
+    --font-sans: "Inter", sans-serif;
 
-  --color-background: #000000;
-  --color-foreground: #ffffff;
-  --color-muted: #52525b;
-  /* zinc-600 */
-  --color-border: #18181b;
-  /* zinc-900 */
-  --color-accent: #ffffff;
-
-  --radius-none: 0px;
+    --color-background: #f0f0f0;
+    --color-foreground: #000000;
+    --color-muted: #71717a;
+    --color-border: #e4e4e7;
+    --color-accent: #000000;
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-    border-radius: 0 !important;
-    cursor: crosshair;
-    /* Adds an intentional, technical feel */
-  }
+    body {
+        background-color: var(--color-background);
+        color: var(--color-foreground);
+        @apply antialiased;
+        overflow-x: hidden;
+    }
 
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    @apply antialiased;
-    overflow-x: hidden;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-serif);
-    letter-spacing: -0.02em;
-  }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-serif);
+    }
 }
 
-/* The Grain Texture Overlay */
-.noise {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0.04;
-  z-index: 9999;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+/* 3D Shelf System */
+.perspective-container {
+    perspective: 2000px;
 }
 
-/* Luxury Tracking */
-.tracking-luxury {
-  letter-spacing: 0.4em;
+.shelf-wrapper {
+    position: relative;
+    transform-style: preserve-3d;
+    margin-bottom: 2rem;
 }
 
-.tracking-technical {
-  letter-spacing: 0.15em;
+.shelf-surface {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to bottom, #ffffff, #e0e0e0);
+    transform: rotateX(85deg) translateZ(-50px);
+    transform-origin: bottom;
+    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.1),
+        inset 0 -10px 20px rgba(255, 255, 255, 0.5);
+    border-bottom: 2px solid #ccc;
+    z-index: 1;
 }
 
-/* Animations - Expensive slow fades */
-.fade-in {
-  animation: fadeIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  opacity: 0;
+.shelf-ledge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+    z-index: 10;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Covers */
+.cover-item {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 5;
 }
 
-/* Sharp grid lines */
-.thick-border {
-  border-width: 1px;
+.cover-shadow {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotateX(90deg);
+    width: 80%;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.3);
+    filter: blur(15px);
+    transition: all 0.6s ease;
+    z-index: -1;
 }
 
-/* Custom selection for brand feel */
-::selection {
-  background: white;
-  color: black;
+.cover-item:hover {
+    transform: translateY(-40px) scale(1.05);
+}
+
+.cover-item:hover .cover-shadow {
+    transform: translateX(-50%) rotateX(90deg) scale(1.5);
+    background: rgba(0, 0, 0, 0.15);
+    filter: blur(25px);
+}
+
+/* Scroll Snap */
+.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 60px;
+    /* Space for the 3D surface */
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-item {
+    scroll-snap-align: center;
+    flex: 0 0 auto;
+}
+
+/* Timeline */
+.timeline-item {
+    position: relative;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #000;
+    transition: width 0.3s ease;
+}
+
+.timeline-item:hover::after,
+.timeline-item.active::after {
+    width: 100%;
+}
+
+/* Animations */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-entrance {
+    animation: slideUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }

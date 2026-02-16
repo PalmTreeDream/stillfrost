@@ -1,112 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
-/* Import Inter and JetBrains Mono */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
 @theme inline {
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", monospace;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Inter", sans-serif;
 
-  --color-background: #06080d;
-  --color-surface: #0c1018;
-  --color-border: #1a1f2e;
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  --color-muted: #71717a;
+  --color-border: #27272a;
+  --color-accent: #a855f7;
 
-  --color-accent-primary: #58a6ff;
-  --color-accent-secondary: #e6edf3;
+  --radius-none: 0px;
+}
 
-  --color-text-body: #8b949e;
-  --color-text-heading: #e6edf3;
+@layer base {
+  * {
+    border-color: var(--color-border);
+    border-radius: 0 !important;
+  }
 
-  --color-status-live: #3fb950;
-  --color-status-dev: #d29922;
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    @apply antialiased;
+  }
 
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+  }
 }
 
 /* Base Styles */
 :root {
   color-scheme: dark;
-  background-color: var(--color-background);
-  color: var(--color-text-body);
 }
 
 body {
   font-family: var(--font-sans);
-  antialiased;
-  selection-background-color: rgba(88, 166, 255, 0.2);
-  selection-color: var(--color-accent-secondary);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-sans);
-  color: var(--color-text-heading);
-  letter-spacing: -0.02em;
-  font-weight: 600;
+.font-serif {
+  font-family: var(--font-serif);
 }
 
-/* Utilities */
-.text-mono {
+.font-mono {
   font-family: var(--font-mono);
 }
 
-.text-ice {
-  color: var(--color-accent-primary);
-}
-
-.bg-ice {
-  background-color: var(--color-accent-primary);
-}
-
-.border-subtle {
-  border-color: var(--color-border);
-}
-
-.glass-nav {
-  background: rgba(6, 8, 13, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(26, 31, 46, 0.5);
-}
-
 /* Animations */
-@keyframes pulse-line {
-  0% {
-    stroke-dashoffset: 100;
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
 
-  100% {
-    stroke-dashoffset: 0;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.animate-pulse-line {
-  animation: pulse-line 3s linear infinite;
-}
-
-/* Hide scrollbar for clean aesthetic but allow scrolling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #30363d;
+/* Utility to ensure sharp corners */
+.sharp {
+  border-radius: 0 !important;
 }

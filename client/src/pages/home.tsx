@@ -58,14 +58,14 @@ const ProjectCover = ({ project, index }: { project: Project; index: number }) =
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 100 }}
+            initial={{ opacity: 0, y: 80 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 + index * 0.1, duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={{ delay: 0.3 + index * 0.12, duration: 1.6, ease: [0.2, 0.8, 0.2, 1] }}
             className="scroll-item px-10"
             id={`project-${project.id}`}
         >
             <div
-                className="cover-item w-[280px] md:w-[350px] aspect-[4/5] bg-white shadow-2xl overflow-hidden cursor-pointer group"
+                className="cover-item w-[280px] md:w-[350px] aspect-[4/5] bg-zinc-900 shadow-2xl overflow-hidden cursor-pointer group"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
@@ -76,13 +76,13 @@ const ProjectCover = ({ project, index }: { project: Project; index: number }) =
                 />
 
                 {/* Hover Overlay */}
-                <div className={`absolute inset-0 bg-black/40 flex flex-col items-center justify-center gap-4 transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+                <div className={`absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-4 transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
                     <div className="flex flex-col items-center text-center px-6">
                         <h3 className="text-white font-serif text-xl mb-1">{project.name}</h3>
-                        <p className="text-white/80 text-xs font-mono mb-4">{project.description}</p>
+                        <p className="text-zinc-400 text-xs font-mono mb-6">{project.description}</p>
 
                         <div className="flex gap-2">
-                            <button className="px-6 py-2 bg-white text-black text-[10px] font-mono uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
+                            <button className="px-6 py-2 bg-white/10 text-white text-[10px] font-mono uppercase tracking-widest border border-white/20 hover:bg-white hover:text-black transition-colors duration-300">
                                 Details
                             </button>
                             {project.url && (
@@ -90,7 +90,7 @@ const ProjectCover = ({ project, index }: { project: Project; index: number }) =
                                     href={project.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-6 py-2 bg-black text-white text-[10px] font-mono uppercase tracking-widest border border-white hover:bg-white hover:text-black transition-colors"
+                                    className="px-6 py-2 bg-sky-300/10 text-sky-300 text-[10px] font-mono uppercase tracking-widest border border-sky-300/30 hover:bg-sky-300 hover:text-black transition-colors duration-300"
                                 >
                                     Open
                                 </a>
@@ -99,9 +99,9 @@ const ProjectCover = ({ project, index }: { project: Project; index: number }) =
                     </div>
                 </div>
 
-                {/* Edition Label (Bottom Sticky) */}
+                {/* Edition Label */}
                 <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end pointer-events-none transition-opacity duration-300 group-hover:opacity-0">
-                    <div className="text-[10px] font-mono uppercase tracking-widest text-white drop-shadow-md">
+                    <div className={`text-[10px] font-mono uppercase tracking-widest drop-shadow-md ${project.status === "Live" ? "text-sky-300" : "text-zinc-500"}`}>
                         {project.status === "Live" ? "● Live" : "○ Soon"}
                     </div>
                 </div>
@@ -124,7 +124,6 @@ const Shelf = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function Home() {
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [activeId, setActiveId] = useState("");
 
     const scrollToProject = (id: string) => {
@@ -136,26 +135,40 @@ export default function Home() {
     };
 
     return (
-        <div className="min-h-screen pt-12 flex flex-col perspective-container">
+        <div className="min-h-screen bg-[#080808] pt-12 flex flex-col perspective-container">
+            {/* Cinematic overlays */}
+            <div className="film-grain" />
+            <div className="vignette" />
+
             {/* Header */}
-            <header className="px-6 py-6 border-b border-zinc-200 flex justify-between items-center mb-12">
+            <motion.header
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+                className="px-6 py-6 border-b border-zinc-900 flex justify-between items-center mb-16"
+            >
                 <div className="flex items-center gap-8">
-                    <h1 className="text-xl font-serif font-bold uppercase tracking-widest">STILL FROST</h1>
-                    <span className="text-[10px] font-mono uppercase text-zinc-400 hidden md:block">Incubation Lab / Product Studio</span>
+                    <h1 className="text-xl font-serif font-bold uppercase tracking-[0.6em] text-zinc-100">STILL FROST</h1>
+                    <span className="text-[10px] font-mono uppercase text-zinc-600 hidden md:block tracking-widest">Incubation Lab / Product Studio</span>
                 </div>
-                <nav className="flex gap-6 text-[10px] font-mono uppercase tracking-widest text-zinc-500">
-                    <a href="#" className="hover:text-black transition-colors">Search</a>
-                    <a href="#" className="hover:text-black transition-colors">Archives</a>
+                <nav className="flex gap-6 text-[10px] font-mono uppercase tracking-widest text-zinc-600">
+                    <a href="#" className="hover:text-zinc-100 transition-colors duration-300">Search</a>
+                    <a href="#" className="hover:text-zinc-100 transition-colors duration-300">Archives</a>
                 </nav>
-            </header>
+            </motion.header>
 
             {/* Hero */}
-            <div className="px-12 md:px-24 mb-16 max-w-2xl">
-                <p className="text-zinc-500 text-sm mb-4">A legacy of shipping. Every six months.</p>
-                <p className="text-xl font-serif leading-relaxed italic">
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 1.8, ease: [0.2, 0.8, 0.2, 1] }}
+                className="px-12 md:px-24 mb-20 max-w-3xl"
+            >
+                <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-600 mb-5">A legacy of shipping. Every six months.</p>
+                <p className="text-2xl md:text-3xl font-serif leading-relaxed italic text-zinc-300">
                     "Still Frost captures the elegance of software frozen in time, refined to the absolute essential."
                 </p>
-            </div>
+            </motion.div>
 
             {/* Shelves */}
             <main className="flex-1 overflow-visible">
@@ -167,7 +180,7 @@ export default function Home() {
             </main>
 
             {/* Timeline Footer */}
-            <footer className="fixed bottom-0 left-0 w-full bg-[#f0f0f0] border-t border-zinc-300 py-12 px-12 md:px-24 z-50">
+            <footer className="fixed bottom-0 left-0 w-full bg-[#080808] border-t border-zinc-900 py-10 px-12 md:px-24 z-50">
                 <div className="flex justify-between items-center overflow-x-auto gap-12 pb-2">
                     {PROJECTS.map((project) => (
                         <div
@@ -175,8 +188,8 @@ export default function Home() {
                             onClick={() => scrollToProject(project.id)}
                             className={`timeline-item flex flex-col shrink-0 ${activeId === project.id ? 'active' : ''}`}
                         >
-                            <span className="text-[9px] font-mono uppercase text-zinc-400 mb-1">{project.year} {project.edition}</span>
-                            <span className="text-[11px] font-serif font-bold uppercase tracking-wider">{project.name}</span>
+                            <span className="text-[9px] font-mono uppercase text-zinc-600 mb-1">{project.year} {project.edition}</span>
+                            <span className="text-[11px] font-serif font-bold uppercase tracking-wider text-zinc-200">{project.name}</span>
                         </div>
                     ))}
                 </div>

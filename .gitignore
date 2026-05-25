@@ -25,6 +25,13 @@ env/
 .DS_Store
 Thumbs.db
 
+# Roblox / Rojo build artifacts
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+sourcemap.json
+
 # Environment variables
 .env
 .env.local

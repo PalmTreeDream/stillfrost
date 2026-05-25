@@ -64,8 +64,29 @@ local function ball(parent: Instance, name: string, size: Vector3, position: Vec
 	})
 end
 
+-- Vertical wood disk (PartType.Cylinder rotated so the round face is horizontal).
+local function disk(parent: Instance, name: string, diameter: number, height: number, position: Vector3, color: Color3?): Part
+	return part(parent, {
+		Name = name,
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(height, diameter, diameter),
+		CFrame = CFrame.new(position) * CFrame.Angles(0, 0, math.pi / 2),
+		Material = Enum.Material.Wood,
+		Color = color or Palette.WoodLight,
+	})
+end
+
 local function post(parent: Instance, name: string, x: number, height: number, z: number)
 	wood(parent, name, Vector3.new(1.2, height, 1.2), Vector3.new(x, height / 2, z))
+end
+
+-- Classic turned-wood finial: base ring -> drum -> narrow neck -> ball cap.
+-- Sits on top of a post whose top face is at world Y = postTopY.
+local function finial(parent: Instance, prefix: string, x: number, postTopY: number, z: number)
+	disk(parent, prefix .. "Base", 1.5, 0.25, Vector3.new(x, postTopY + 0.125, z), Palette.WoodLight)
+	disk(parent, prefix .. "Drum", 1.0, 0.40, Vector3.new(x, postTopY + 0.45,  z), Palette.WoodDark)
+	disk(parent, prefix .. "Neck", 0.5, 0.30, Vector3.new(x, postTopY + 0.80,  z), Palette.WoodDark)
+	ball(parent, prefix .. "Ball", Vector3.new(1.4, 1.4, 1.4), Vector3.new(x, postTopY + 1.65, z), Palette.WoodDark)
 end
 
 local function cloud(parent: Instance, index: number, center: Vector3)
@@ -100,11 +121,11 @@ function BedBuilder.build(originCF: CFrame?, parent: Instance?): Model
 	post(bed, "PostFootLeft",  -8, 10,  15)
 	post(bed, "PostFootRight",  8, 10,  15)
 
-	-- Ball finials on top of each post
-	ball(bed, "FinialHeadLeft",  Vector3.new(1.7, 1.7, 1.7), Vector3.new(-8, 13.6, -15), Palette.WoodDark)
-	ball(bed, "FinialHeadRight", Vector3.new(1.7, 1.7, 1.7), Vector3.new( 8, 13.6, -15), Palette.WoodDark)
-	ball(bed, "FinialFootLeft",  Vector3.new(1.7, 1.7, 1.7), Vector3.new(-8, 10.6,  15), Palette.WoodDark)
-	ball(bed, "FinialFootRight", Vector3.new(1.7, 1.7, 1.7), Vector3.new( 8, 10.6,  15), Palette.WoodDark)
+	-- Layered turned-wood finials on top of each post
+	finial(bed, "FinialHeadLeft_",  -8, 13, -15)
+	finial(bed, "FinialHeadRight_",  8, 13, -15)
+	finial(bed, "FinialFootLeft_",  -8, 10,  15)
+	finial(bed, "FinialFootRight_",  8, 10,  15)
 
 	---------------------------------------------------------------------------
 	-- Headboard: top rail + bottom rail + vertical spindles
